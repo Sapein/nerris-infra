@@ -1,0 +1,19 @@
+---
+- hosts: all
+  remote_user: root
+  tasks:
+    - name: Disallow SSH Password Authentication
+      lineinfile:
+        path: '/etc/ssh/sshd_config'
+        regexp: '^(.*)PasswordAuthentication(.*)$'
+        line: 'PasswordAuthentication no'
+
+    - name: Add in additional configuration for ssh
+      copy:
+        src: configs/disable_password_auth.conf
+        dest: /etc/ssh/sshd_config.d/49-disable-pass.conf
+
+    - name: Restart SSH Server
+      ansible.builtin.service:
+        name: ssh
+        state: restarted

@@ -1,0 +1,27 @@
+---
+- hosts: all
+  remote_user: root
+  tasks:
+    - name: Create a general-purpose user.
+      ansible.builtin.user:
+        name: 'sapeint'
+        shell: '/bin/bash'
+        state: "present"
+
+    - name: Make directory
+      file:
+        path: "/home/sapeint/.ssh"
+        state: "directory"
+
+    - name: Enable SSH-Logins for general purpose user.
+      ansible.builtin.copy:
+        src: /root/.ssh/authorized_keys
+        dest: /home/sapeint/.ssh/authorized_keys
+        remote_src: yes
+
+    - name: Adjust file permissions
+      ansible.builtin.file:
+        dest: /home/sapeint/.ssh
+        owner: sapeint
+        group: sapeint
+        recurse: yes

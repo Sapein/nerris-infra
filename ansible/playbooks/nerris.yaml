@@ -1,0 +1,35 @@
+---
+- hosts: all
+  remote_user: root
+  become: true
+  tasks:
+    - name: Create the 'nerris' user.
+      ansible.builtin.user:
+        name: nerris
+        group: docker
+        state: "present"
+
+    - name: Make directory
+      file:
+        path: "/home/nerris/.ssh"
+        state: "directory"
+
+    - name: Enable SSH-Logins for general purpose user.
+      ansible.builtin.copy:
+        src: /root/.ssh/authorized_keys
+        dest: /home/nerris/.ssh/authorized_keys
+        remote_src: yes
+
+    - name: Adjust file permissions
+      ansible.builtin.file:
+        dest: /home/nerris/.ssh
+        owner: nerris
+        group: nerris
+        recurse: yes
+
+    - name: Pull latest nerris version
+      ansible.builtin.git:
+        repo: https://github.com/sapein/nerris.git
+        dest: /root/nerris
+        become: yes
+        become_user: nerris

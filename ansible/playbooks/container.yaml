@@ -1,0 +1,16 @@
+---
+- hosts: all
+  remote_user: root
+  become: true
+  tasks:
+    - name: Update apt and install docker
+      apt:
+        name: docker.io
+        state: latest
+        update_cache: true
+
+    - name: Update apt and install compose
+      apt:
+        name: docker-compose
+        state: latest
+        update_cache: true
