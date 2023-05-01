@@ -33,3 +33,9 @@ variable "vultr_hostname" {
   type = string
   default = "default-hostname"
 }
+
+variable "vultr_label" {
+  description = "The hostname of the vultr server"
+  type = string
+  default = "Cloud Instance"
+}

@@ -19,6 +19,7 @@ resource "vultr_instance" "nerris" {
   region = var.vultr_region
   os_id = var.vultr_osid
   hostname = var.vultr_hostname
+  label = var.vultr_label
   backups = "disabled"
   ssh_key_ids = [vultr_ssh_key.main_ssh_key.id]
   enable_ipv6 = true
